@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation
+
 # Create your models here.
 class Tag(models.Model):
     value = models.TextField(max_length=100)
@@ -9,6 +11,18 @@ class Tag(models.Model):
         return self.value
 
 
+class Comment(models.Model):
+    creator=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content= models.TextField()
+    #post=models.ForeignKey(Post,on_delete=models.CASCADE, null=True)
+    #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    content_object = GenericForeignKey("content_type", "object_id")
+    def __str__(self):
+        return self.content 
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -20,19 +34,11 @@ class Post(models.Model):
     slug = models.SlugField()
     summary = models.TextField(max_length=500)
     content = models.TextField()
+    comments = GenericRelation(Comment)
+    comments = GenericRelation(Comment)
     tags = models.ManyToManyField(Tag, related_name="posts")
     def __str__(self):
         return self.title    
 
-class Comment(models.Model):
-    creator=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    content= models.TextField()
-    #post=models.ForeignKey(Post,on_delete=models.CASCADE, null=True)
-    #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    def __str__(self):
-        return self.content 
     
     
