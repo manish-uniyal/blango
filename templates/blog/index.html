@@ -1,5 +1,28 @@
 {% extends "base.html" %}
+{% load blog_extras %}
 {% block content %}
+
+<h2>Index Template</h2>
+
+
+<h2>Blog Posts</h2>
+{% for post in posts %}
+<!-- for post in pos -->
+
+<div class="row">
+    <div class="col">
+        <h3>{{ post.title }}</h3>
+        <small>By {{ post.author|author_details }} on {{ post.published_at|date:"M, d Y" }}</small>
+        <p>{{ post.summary }}</p>
+        <p>
+          
+            ({{ post.content|wordcount }} words)
+            <a href="#">Continue Read</a>
+        </p>
+    </div>
+</div>
+{% endfor %}
+
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -20,7 +43,6 @@
         </div>
     </div>
 </nav>
-<h2>Index Template</h2>
 
 
 
@@ -87,3 +109,7 @@
 </ul>
 
 {% endblock %}
+
+
+
+
