@@ -35,7 +35,7 @@ def author_details_tag(context):
         prefix= format_html('<a href="mailto:{} ">', author.email)
         suffix=   format_html("</a>") 
     else:
-        suffix=""
+        suffix="" 
         prefix=""    
 
     return format_html('{}{}{}{}"slug="{}',prefix, name, suffix,content, slug )
