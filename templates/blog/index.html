@@ -8,19 +8,23 @@
 <h2>Blog Posts</h2>
 {% for post in posts %}
 <!-- for post in pos -->
-
-<div class="row">
-    <div class="col">
+{% row "border-bottom" %}
+<!-- <div class="row">-->
+    {% col %}
+    <!--<div class="col">-->
         <h3>{{ post.title }}</h3>
-        <small>By {{ post.author|author_details }} on {{ post.published_at|date:"M, d Y" }}</small>
+        {% include "blog/post-byline.html" %}
         <p>{{ post.summary }}</p>
         <p>
           
             ({{ post.content|wordcount }} words)
             <a href="#">Continue Read</a>
         </p>
-    </div>
-</div>
+    <!-- </div> -->
+    {% endcol %}
+
+<!-- </div> -->
+{% endrow %}
 {% endfor %}
 
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
